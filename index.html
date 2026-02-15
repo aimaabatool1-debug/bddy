@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Soban 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: 'Comic Sans MS', cursive;
+  background: linear-gradient(#ffdde1, #ee9ca7);
+  overflow: hidden;
+  text-align: center;
+}
+
+.page {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.active {
+  display: flex;
+}
+
+h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.cake {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  background: #ffb6c1;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.candle {
+  width: 10px;
+  height: 40px;
+  background: white;
+  position: absolute;
+  top: -40px;
+}
+
+.flame {
+  width: 12px;
+  height: 12px;
+  background: orange;
+  border-radius: 50%;
+  position: absolute;
+  top: -12px;
+  left: -1px;
+  animation: flicker 0.5s infinite alternate;
+}
+
+@keyframes flicker {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+.hint {
+  color: white;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 20px;
+  background: #ff69b4;
+  color: white;
+}
+
+.flower {
+  font-size: 2.5rem;
+  position: absolute;
+  cursor: pointer;
+}
+
+.bouquet {
+  font-size: 4rem;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <h1>🎉 Happy Birthday Soban 🎉</h1>
+
+  <div class="cake" id="cake">
+    <div class="candle" style="left:40px">
+      <div class="flame"></div>
+    </div>
+    <div class="candle" style="left:95px">
+      <div class="flame"></div>
+    </div>
+    <div class="candle" style="left:150px">
+      <div class="flame"></div>
+    </div>
+  </div>
+
+  <div class="hint">⬆️ Swipe upward to blow the candles</div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <h1>🤍 Make a Wish 🤍</h1>
+  <p style="color:white; max-width:300px;">
+    May all your halal wishes come true 🌙  
+    May Allah bless you with happiness, success and peace 🤍  
+    May your smile always stay this bright ✨
+  </p>
+  <button onclick="startFlowers()">Tap to Continue 🌸</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <h1>Collect the Flowers 🌸</h1>
+</div>
+
+<script>
+let startY = null;
+let flowersCollected = 0;
+
+document.addEventListener("touchstart", e => {
+  startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchend", e => {
+  let endY = e.changedTouches[0].clientY;
+  if (startY - endY > 50) {
+    blowCandles();
+  }
+});
+
+function blowCandles() {
+  document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
+  setTimeout(() => {
+    showPage(2);
+  }, 1000);
+}
+
+function showPage(n) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page' + n).classList.add('active');
+}
+
+function startFlowers() {
+  showPage(3);
+  for (let i = 0; i < 7; i++) {
+    createFlower();
+  }
+}
+
+function createFlower() {
+  const flower = document.createElement('div');
+  flower.className = 'flower';
+  flower.innerHTML = '🌸';
+  flower.style.left = Math.random() * 80 + 'vw';
+  flower.style.top = Math.random() * 80 + 'vh';
+
+  flower.onclick = () => {
+    flower.remove();
+    flowersCollected++;
+    if (flowersCollected === 5) {
+      showBouquet();
+    }
+  };
+
+  document.getElementById('page3').appendChild(flower);
+}
+
+function showBouquet() {
+  document.getElementById('page3').innerHTML = `
+    <div class="bouquet">💐</div>
+    <h1>Thank you for being in my life 🤍</h1>
+    <p style="color:white; max-width:300px;">
+      You made my world brighter, calmer and better 🌷  
+      I’m grateful for you, always.
+    </p>
+  `;
+}
+</script>
+
+</body>
+</html>
